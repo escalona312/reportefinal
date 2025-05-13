@@ -45,7 +45,8 @@ body {
     display: none;
     font-size: 2rem;
     cursor: pointer;
-    margin-left: 16px;
+    margin-right: 18px;
+    z-index: 200;
 }
 @media (max-width: 700px) {
     .navbar-menu {
