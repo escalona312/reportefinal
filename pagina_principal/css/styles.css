@@ -12,6 +12,7 @@ body {
     color: #fff;
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     border-radius: 0 0 8px 8px;
+    position: relative;
 }
 .navbar-title {
     display: flex;
@@ -22,6 +23,11 @@ body {
 }
 .icon {
     font-size: 1.5rem;
+}
+.navbar-menu {
+    display: flex;
+    align-items: center;
+    gap: 18px;
 }
 .navbar-menu a {
     color: #fff;
@@ -35,6 +41,33 @@ body {
 .navbar-menu a:hover, .navbar-menu a.active {
     border-bottom: 2px solid #fff;
 }
+.navbar-toggle {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+    margin-left: 16px;
+}
+@media (max-width: 700px) {
+    .navbar-menu {
+        flex-direction: column;
+        align-items: flex-start;
+        background: #43a047;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        padding: 12px 0;
+        display: none;
+        z-index: 100;
+    }
+    .navbar-menu.active {
+        display: flex;
+    }
+    .navbar-toggle {
+        display: block;
+    }
+}
+
 .main-content {
     background: #f1faee;
     margin: 0 auto;
