@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas | Sistema de Reportes Verdes</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Chart.js para la gráfica -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="navbar">
+        <div class="navbar-title">
+            <span class="icon">🤍</span>
+            <span><strong>Sistema de Reportes Verdes</strong></span>
+        </div>
+        <nav class="navbar-menu">
+            <a href="index.html">Inicio</a>
+            <a href="reporte.html">Reportar</a>
+            <a href="estadisticas.html" class="active">Estadísticas</a>
+            <a href="importancia.html">Importancia</a>
+        </nav>
+    </header>
+    <main class="main-content">
+        <section class="estadisticas-section">
+            <h2 class="main-title" style="font-size:1.2rem; text-align:left;">Distribución de Reportes</h2>
+            <div style="width:100%;max-width:700px;margin:0 auto;">
+                <canvas id="reporteChart" height="120"></canvas>
+            </div>
+            <div class="estadisticas-leyenda">
+                <span>Agua</span>
+                <span>Luces</span>
+                <span>Basura</span>
+                <span>Ruido</span>
+                <span>Otros</span>
+            </div>
+            <h3 class="main-title" style="font-size:1.1rem; text-align:left; margin-top:32px;">Reportes Recientes</h3>
+            <div class="tabla-reportes">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Ubicación</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportes-tbody">
+                        <!-- Aquí se insertarán los reportes dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <strong>Sistema de Reportes Verdes</strong>
+                <div>Juntos por un campus más sostenible</div>
+            </div>
+            <div class="footer-social">
+                <a href="#"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/facebook.svg" alt="Facebook" class="social-icon"></a>
+                <a href="#"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg" alt="Instagram" class="social-icon"></a>
+                <a href="#"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/twitter.svg" alt="Twitter" class="social-icon"></a>
+            </div>
+        </div>
+        <div style="text-align:center; color:#e0f2e9; font-size:0.9rem; margin-top:10px;">
+            © 2023 Sistema de Reportes Verdes. Todos los derechos reservados.
+        </div>
+    </footer>
+    <script>
+    // Gráfica de ejemplo
+    const ctx = document.getElementById('reporteChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Agua', 'Luces', 'Basura', 'Ruido', 'Otros'],
+            datasets: [{
+                label: 'Reportes',
+                data: [12, 7, 9, 5, 2],
+                backgroundColor: [
+                    '#43a047cc',
+                    '#4f8cffcc',
+                    '#f4b400cc',
+                    '#a259f7cc',
+                    '#bdbdbdcc'
+                ],
+                borderRadius: 8
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 } }
+            }
+        }
+    });
+
+    // Cargar reportes recientes desde el backend
+    fetch('/reportes')
+        .then(res => res.json())
+        .then(reportes => {
+            const tbody = document.getElementById('reportes-tbody');
+            tbody.innerHTML = '';
+            reportes.slice(-10).reverse().forEach(reporte => {
+                // Formatea la fecha (puedes ajustar según tu formato)
+                const fecha = new Date(reporte.fecha).toLocaleDateString('es-ES');
+                // Estado ficticio (puedes cambiarlo si tienes un campo real)
+                let estado = '<span class="estado pendiente">Pendiente</span>';
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${reporte.tipo}</td>
+                        <td>${reporte.ubicacion}</td>
+                        <td>${fecha}</td>
+                        <td>${estado}</td>
+                    </tr>
+                `;
+            });
+        });
+    </script>
+</body>
+</html>
