@@ -125,6 +125,7 @@
                     <td>
                         <button onclick="guardar(${r.id})">Guardar</button>
                         <button class="delete-btn" onclick="eliminar(${r.id})">Eliminar</button>
+                        <button style="background-color:#1976d2;" onclick="marcarResuelto(${r.id})">Resuelto</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -164,6 +165,20 @@
                 cargarReportes();
             } else {
                 alert('Error al eliminar el reporte.');
+            }
+        }
+
+        async function marcarResuelto(id) {
+            const res = await fetch('/admin/reportes/resuelto', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+            if (res.ok) {
+                alert('¡Reporte marcado como resuelto!');
+                cargarReportes();
+            } else {
+                alert('Error al marcar como resuelto');
             }
         }
 

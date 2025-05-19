@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const mysql = require('mysql');
@@ -8,17 +9,17 @@ const port = 3000;
 
 // Configuración sesión
 app.use(session({
-    secret: 'clave-secreta-1234',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true
 }));
 
 // Conexión a la base de datos
 const connection = mysql.createConnection({
-    host: 'data.ca7oss6qu6bb.us-east-1.rds.amazonaws.com',
-    user: 'yon',
-    password: 'kokopato8383',
-    database: 'test2'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 });
 
 connection.connect(err => {
@@ -83,6 +84,16 @@ app.post('/guardar_reporte', (req, res) => {
         res.redirect('/');
     });
 });
+app.get('/reportes/json', (req, res) => {
+    connection.query('SELECT * FROM REPORTES', (err, results) => {
+        if (err) {
+            console.error('Error al obtener reportes:', err);
+            return res.status(500).json({ error: 'Error al obtener reportes' });
+        }
+        res.json(results);
+    });
+});
+
 
 // Página principal protegida con reportes (solo para usuario root)
 app.get('/admin/reportes', authMiddleware, (req, res) => {
@@ -138,4 +149,22 @@ app.delete('/admin/reportes/eliminar', authMiddleware, (req, res) => {
         }
         res.json({ mensaje: 'Reporte eliminado' });
     });
+});
+
+// Marcar reporte como resuelto
+app.post('/admin/reportes/resuelto', authMiddleware, (req, res) => {
+    const { id } = req.body;
+    const sql = 'UPDATE REPORTES SET estado = "Resuelto" WHERE id = ?';
+    connection.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error('Error al marcar como resuelto:', err);
+            return res.status(500).json({ error: 'Error al marcar como resuelto' });
+        }
+        res.json({ mensaje: 'Reporte marcado como resuelto' });
+    });
+});
+
+// Bloquear acceso directo a reportes.html
+app.get('/pagina_principal/reportes.html', (req, res) => {
+    res.redirect('/login.html');
 });
