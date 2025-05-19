@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Importancia | Sistema de Reportes Verdes</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
     <header class="navbar">
@@ -12,11 +12,12 @@
             <span class="icon">🤍</span>
             <span><strong>Sistema de Reportes Verdes</strong></span>
         </div>
-        <nav class="navbar-menu">
+        <span class="navbar-toggle" id="navbar-toggle">&#9776;</span>
+        <nav class="navbar-menu" id="navbar-menu">
             <a href="index.html">Inicio</a>
             <a href="reporte.html">Reportar</a>
             <a href="estadisticas.html">Estadísticas</a>
-            <a href="importancia.html" class="active">Importancia</a>
+            <a href="importancia.html">Importancia</a>
         </nav>
     </header>
     <main class="main-content">
@@ -37,17 +38,17 @@
                     <ul class="importancia-list">
                         <li>
                             <span class="importancia-list-icon" style="color:#43a047;">⚡</span>
-                            <strong>Conservación de Recursos Naturales</strong><br>
+                            <strong>Conservación de Recursos Naturales</strong><br />
                             Los recursos naturales como el agua, los bosques y los minerales son finitos. Su uso responsable garantiza su disponibilidad para las generaciones futuras.
                         </li>
                         <li>
                             <span class="importancia-list-icon" style="color:#4f8cff;">☁️</span>
-                            <strong>Mitigación del Cambio Climático</strong><br>
+                            <strong>Mitigación del Cambio Climático</strong><br />
                             Reducir nuestra huella de carbono ayuda a combatir el calentamiento global y sus efectos devastadores como sequías, inundaciones y fenómenos meteorológicos extremos.
                         </li>
                         <li>
                             <span class="importancia-list-icon" style="color:#f4b400;">😊</span>
-                            <strong>Salud y Bienestar Humano</strong><br>
+                            <strong>Salud y Bienestar Humano</strong><br />
                             Un medio ambiente limpio y saludable es esencial para nuestra salud física y mental. La contaminación del aire y agua está directamente relacionada con numerosas enfermedades.
                         </li>
                     </ul>
@@ -55,7 +56,7 @@
             </div>
             <div class="importancia-card" style="margin-top:32px;">
                 <h3 class="importancia-title">Impacto de Nuestras Acciones Diarias</h3>
-                <p>
+                <p class="pequeña">
                     Cada pequeña acción cuenta. Desde apagar las luces cuando no las necesitamos hasta reportar fugas de agua, nuestras decisiones diarias tienen un impacto acumulativo significativo en el medio ambiente.
                 </p>
                 <div class="impacto-grid">
@@ -97,5 +98,15 @@
             </div>
         </section>
     </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggle = document.getElementById('navbar-toggle');
+            const menu = document.getElementById('navbar-menu');
+            toggle.addEventListener('click', () => {
+                menu.classList.toggle('active');
+            });
+        });
+    </script>
 </body>
 </html>
