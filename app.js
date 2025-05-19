@@ -15,20 +15,36 @@ app.use(session({
 }));
 
 // Conexión a la base de datos
-const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
-});
+let connection;
 
-connection.connect(err => {
-    if (err) {
-        console.log('Error de conexión a la base de datos:', err.stack);
-        return;
-    }
-    console.log('Conectado a la base de datos MySQL');
-});
+function handleDisconnect() {
+    connection = mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
+    });
+
+    connection.connect(function(err) {
+        if (err) {
+            console.error('Error al conectar a la base de datos:', err);
+            setTimeout(handleDisconnect, 2000); // Reintenta después de 2 segundos
+        } else {
+            console.log('Conectado a la base de datos MySQL');
+        }
+    });
+
+    connection.on('error', function(err) {
+        console.error('DB error', err);
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            handleDisconnect();
+        } else {
+            throw err;
+        }
+    });
+}
+
+handleDisconnect();
 
 // Middleware para archivos estáticos y parseo de formularios
 app.use(express.static(path.join(__dirname, 'pagina_principal')));
